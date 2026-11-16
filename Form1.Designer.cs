@@ -29,45 +29,165 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
-            pictureBox1 = new PictureBox();
+            pictureBox_simulation = new PictureBox();
+            groupBox2 = new GroupBox();
+            button_reset_simulation = new Button();
+            groupBox3 = new GroupBox();
+            numericUpDown_stepTime = new NumericUpDown();
+            label1 = new Label();
+            button_stop_simulation = new Button();
+            button_start_simulation = new Button();
+            button_add_satellite_in_system = new Button();
+            label2 = new Label();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_simulation).BeginInit();
+            groupBox2.SuspendLayout();
+            groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown_stepTime).BeginInit();
             SuspendLayout();
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(pictureBox1);
-            groupBox1.Location = new Point(12, 12);
+            groupBox1.Controls.Add(pictureBox_simulation);
+            groupBox1.Font = new Font("Times New Roman", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            groupBox1.Location = new Point(326, 12);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(718, 642);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Визуализация движения спутников в 2D";
             // 
-            // pictureBox1
+            // pictureBox_simulation
             // 
-            pictureBox1.Location = new Point(6, 26);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(706, 610);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            pictureBox_simulation.Location = new Point(6, 26);
+            pictureBox_simulation.Name = "pictureBox_simulation";
+            pictureBox_simulation.Size = new Size(706, 610);
+            pictureBox_simulation.TabIndex = 0;
+            pictureBox_simulation.TabStop = false;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(button_reset_simulation);
+            groupBox2.Controls.Add(groupBox3);
+            groupBox2.Controls.Add(button_stop_simulation);
+            groupBox2.Controls.Add(button_start_simulation);
+            groupBox2.Controls.Add(button_add_satellite_in_system);
+            groupBox2.Font = new Font("Times New Roman", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            groupBox2.Location = new Point(12, 12);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(308, 636);
+            groupBox2.TabIndex = 1;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Панель управления";
+            // 
+            // button_reset_simulation
+            // 
+            button_reset_simulation.Font = new Font("Times New Roman", 13.8F);
+            button_reset_simulation.Location = new Point(6, 427);
+            button_reset_simulation.Name = "button_reset_simulation";
+            button_reset_simulation.Size = new Size(296, 93);
+            button_reset_simulation.TabIndex = 4;
+            button_reset_simulation.Text = "Сброс";
+            button_reset_simulation.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(label2);
+            groupBox3.Controls.Add(numericUpDown_stepTime);
+            groupBox3.Controls.Add(label1);
+            groupBox3.Font = new Font("Times New Roman", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            groupBox3.Location = new Point(6, 33);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(296, 91);
+            groupBox3.TabIndex = 3;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Параметры моделирования";
+            // 
+            // numericUpDown_stepTime
+            // 
+            numericUpDown_stepTime.Location = new Point(51, 40);
+            numericUpDown_stepTime.Name = "numericUpDown_stepTime";
+            numericUpDown_stepTime.Size = new Size(205, 34);
+            numericUpDown_stepTime.TabIndex = 1;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(15, 42);
+            label1.Name = "label1";
+            label1.Size = new Size(30, 26);
+            label1.TabIndex = 0;
+            label1.Text = "t: ";
+            // 
+            // button_stop_simulation
+            // 
+            button_stop_simulation.Font = new Font("Times New Roman", 13.8F);
+            button_stop_simulation.Location = new Point(6, 328);
+            button_stop_simulation.Name = "button_stop_simulation";
+            button_stop_simulation.Size = new Size(296, 93);
+            button_stop_simulation.TabIndex = 2;
+            button_stop_simulation.Text = "Стоп";
+            button_stop_simulation.UseVisualStyleBackColor = true;
+            // 
+            // button_start_simulation
+            // 
+            button_start_simulation.Font = new Font("Times New Roman", 13.8F);
+            button_start_simulation.Location = new Point(6, 229);
+            button_start_simulation.Name = "button_start_simulation";
+            button_start_simulation.Size = new Size(296, 93);
+            button_start_simulation.TabIndex = 1;
+            button_start_simulation.Text = "Пуск";
+            button_start_simulation.UseVisualStyleBackColor = true;
+            // 
+            // button_add_satellite_in_system
+            // 
+            button_add_satellite_in_system.Font = new Font("Times New Roman", 13.8F);
+            button_add_satellite_in_system.Location = new Point(6, 130);
+            button_add_satellite_in_system.Name = "button_add_satellite_in_system";
+            button_add_satellite_in_system.Size = new Size(296, 93);
+            button_add_satellite_in_system.TabIndex = 0;
+            button_add_satellite_in_system.Text = "Добавить спутник";
+            button_add_satellite_in_system.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(262, 42);
+            label2.Name = "label2";
+            label2.Size = new Size(28, 26);
+            label2.TabIndex = 2;
+            label2.Text = "с.";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1265, 683);
+            ClientSize = new Size(1052, 664);
+            Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Моделирование пространственно-временной доспупности спутниковых систем связи";
             groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_simulation).EndInit();
+            groupBox2.ResumeLayout(false);
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown_stepTime).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
         private GroupBox groupBox1;
-        private PictureBox pictureBox1;
+        private PictureBox pictureBox_simulation;
+        private GroupBox groupBox2;
+        private Button button_stop_simulation;
+        private Button button_start_simulation;
+        private Button button_add_satellite_in_system;
+        private GroupBox groupBox3;
+        private NumericUpDown numericUpDown_stepTime;
+        private Label label1;
+        private Button button_reset_simulation;
+        private Label label2;
     }
 }
