@@ -33,12 +33,12 @@
             groupBox2 = new GroupBox();
             button_reset_simulation = new Button();
             groupBox3 = new GroupBox();
+            label2 = new Label();
             numericUpDown_stepTime = new NumericUpDown();
             label1 = new Label();
             button_stop_simulation = new Button();
             button_start_simulation = new Button();
             button_add_satellite_in_system = new Button();
-            label2 = new Label();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox_simulation).BeginInit();
             groupBox2.SuspendLayout();
@@ -52,7 +52,7 @@
             groupBox1.Font = new Font("Times New Roman", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
             groupBox1.Location = new Point(326, 12);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(718, 642);
+            groupBox1.Size = new Size(913, 934);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Визуализация движения спутников в 2D";
@@ -61,9 +61,10 @@
             // 
             pictureBox_simulation.Location = new Point(6, 26);
             pictureBox_simulation.Name = "pictureBox_simulation";
-            pictureBox_simulation.Size = new Size(706, 610);
+            pictureBox_simulation.Size = new Size(900, 900);
             pictureBox_simulation.TabIndex = 0;
             pictureBox_simulation.TabStop = false;
+            pictureBox_simulation.Paint += pictureBox_simulation_Paint;
             // 
             // groupBox2
             // 
@@ -75,7 +76,7 @@
             groupBox2.Font = new Font("Times New Roman", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
             groupBox2.Location = new Point(12, 12);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(308, 636);
+            groupBox2.Size = new Size(308, 926);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "Панель управления";
@@ -102,6 +103,15 @@
             groupBox3.TabIndex = 3;
             groupBox3.TabStop = false;
             groupBox3.Text = "Параметры моделирования";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(262, 42);
+            label2.Name = "label2";
+            label2.Size = new Size(28, 26);
+            label2.TabIndex = 2;
+            label2.Text = "с.";
             // 
             // numericUpDown_stepTime
             // 
@@ -149,23 +159,15 @@
             button_add_satellite_in_system.Text = "Добавить спутник";
             button_add_satellite_in_system.UseVisualStyleBackColor = true;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(262, 42);
-            label2.Name = "label2";
-            label2.Size = new Size(28, 26);
-            label2.TabIndex = 2;
-            label2.Text = "с.";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1052, 664);
+            ClientSize = new Size(1248, 951);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Моделирование пространственно-временной доспупности спутниковых систем связи";
             groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox_simulation).EndInit();
