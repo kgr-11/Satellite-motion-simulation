@@ -20,31 +20,32 @@ namespace Satellite_Movements
             //установка в центре Земли
             DrawRepository.SetEarth(graphics, new Point(pictureBox_simulation.Width / 2, pictureBox_simulation.Height / 2));
 
-            //установка спутника
-            DrawRepository.SetSatellite(graphics);
-
             int R = 300;
             //отрисовка орбиты
             using (Pen pen = new Pen(Color.Red, 4.0f))
             {
                 graphics.DrawEllipse(pen, (float)pictureBox_simulation.Width / 2 - R, (float)pictureBox_simulation.Height / 2 - R, R * 2, R * 2);
             }
-            //отрисовка спутника как кружка
-            using (SolidBrush sb = new SolidBrush(Color.DarkBlue))
-            {
-                //переносим систему координат в центр и рисуем спутник относительно центра Земли
-                graphics.TranslateTransform(pictureBox_simulation.Width / 2, pictureBox_simulation.Height / 2);
-                //делаем базовую декартовую систему координат
-                graphics.ScaleTransform(1.0f, -1.0f);
+            //отрисовка спутника как движущейся картинки
+            //переносим систему координат в центр и рисуем спутник относительно центра Земли
+            graphics.TranslateTransform(pictureBox_simulation.Width / 2, pictureBox_simulation.Height / 2);
+            //делаем базовую декартовую систему координат
+            graphics.ScaleTransform(1.0f, -1.0f);
 
-                //ширина спутника - шарика
-                int widthSatellite = 20;
+            float x = R * (float)Math.Cos(Math.PI / 180 * angle);
+            float y = R * (float)Math.Sin(Math.PI / 180 * angle);
 
-                graphics.FillEllipse(sb, R * (float)Math.Cos(Math.PI / 180 * angle) - widthSatellite, R * (float)Math.Sin(Math.PI / 180 * angle) - widthSatellite, widthSatellite * 2, widthSatellite * 2);
+            //перенос системы координат в точку спутника
+            graphics.TranslateTransform(x, y);
 
-                //сбрасываем все настройки
-                graphics.ResetTransform();
-            }
+            //поворот системы координат спутника для ориентации его всегда на Землю
+            graphics.RotateTransform(-45 + angle);//на вход идут градусы
+
+            //установка спутника
+            DrawRepository.SetSatellite(graphics,angle);
+
+            //сбрасываем все настройки
+            graphics.ResetTransform();
 
         }
 
