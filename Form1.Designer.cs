@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             groupBox1 = new GroupBox();
             pictureBox_simulation = new PictureBox();
             groupBox2 = new GroupBox();
@@ -39,6 +40,7 @@
             button_stop_simulation = new Button();
             button_start_simulation = new Button();
             button_add_satellite_in_system = new Button();
+            timer_simulation = new System.Windows.Forms.Timer(components);
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox_simulation).BeginInit();
             groupBox2.SuspendLayout();
@@ -159,6 +161,11 @@
             button_add_satellite_in_system.Text = "Добавить спутник";
             button_add_satellite_in_system.UseVisualStyleBackColor = true;
             // 
+            // timer_simulation
+            // 
+            timer_simulation.Interval = 50;
+            timer_simulation.Tick += timer_simulation_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -191,5 +198,6 @@
         private Label label1;
         private Button button_reset_simulation;
         private Label label2;
+        private System.Windows.Forms.Timer timer_simulation;
     }
 }
