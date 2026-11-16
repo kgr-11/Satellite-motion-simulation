@@ -44,6 +44,22 @@ namespace Satellite_Movements
             //установка спутника
             DrawRepository.SetSatellite(graphics,angle);
 
+
+            //Отрисовка сектора, который покрывает спутник
+            using (SolidBrush brush=new SolidBrush(Color.FromArgb(100,68,193,190)))
+            using (Pen pen = new Pen(Color.FromArgb(100, Color.Lime), 3.0f))
+            {
+                int alpha = 15 - 45;//палки идут по наклоном в 15 градусов, плюс надо учитывать, что система изначально уже повернута
+                int len = R - 165;
+
+                PointF[] PointTreangle = { new PointF(0,0),
+                    new PointF(-(len * (float)Math.Cos(Math.PI / 180 * alpha)), len * (float)Math.Sin(Math.PI / 180 * alpha)),
+                    new PointF((len * (float)Math.Cos(Math.PI / 180 * (alpha - 90))), len * (float)Math.Sin(Math.PI / 180 * (alpha - 90))) };
+
+                graphics.FillPolygon(brush, PointTreangle);
+                graphics.DrawPolygon(pen, PointTreangle);
+            }
+
             //сбрасываем все настройки
             graphics.ResetTransform();
 
