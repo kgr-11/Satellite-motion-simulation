@@ -16,7 +16,7 @@ namespace Satellite_Movements
             using (MemoryStream ms = new MemoryStream(Properties.Resources.Earth))
             {
                 Image img = new Bitmap(ms);
-                g.DrawImage(img, CenterControll.X-200, CenterControll.Y - 200, 400, 400);
+                g.DrawImage(img, CenterControll.X-25, CenterControll.Y - 25, 50, 50);
             }
         }
 
@@ -31,7 +31,7 @@ namespace Satellite_Movements
             }
         }
         //Функция установки спутника
-        public static void SetSatellite(Graphics g,float angle)
+        public static void SetSatellite(Graphics g)
         {
             //преобразуем потока байт из ресурсов в картинку, делаем копию, устанавливаем в контролле
             using (MemoryStream ms = new MemoryStream(Properties.Resources.satellite))

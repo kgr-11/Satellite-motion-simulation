@@ -37,7 +37,7 @@
             label2 = new Label();
             numericUpDown_stepTime = new NumericUpDown();
             label1 = new Label();
-            button_stop_simulation = new Button();
+            button_pause_simulation = new Button();
             button_start_simulation = new Button();
             button_add_satellite_in_system = new Button();
             timer_simulation = new System.Windows.Forms.Timer(components);
@@ -72,7 +72,7 @@
             // 
             groupBox2.Controls.Add(button_reset_simulation);
             groupBox2.Controls.Add(groupBox3);
-            groupBox2.Controls.Add(button_stop_simulation);
+            groupBox2.Controls.Add(button_pause_simulation);
             groupBox2.Controls.Add(button_start_simulation);
             groupBox2.Controls.Add(button_add_satellite_in_system);
             groupBox2.Font = new Font("Times New Roman", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
@@ -85,6 +85,7 @@
             // 
             // button_reset_simulation
             // 
+            button_reset_simulation.Cursor = Cursors.Hand;
             button_reset_simulation.Font = new Font("Times New Roman", 13.8F);
             button_reset_simulation.Location = new Point(6, 427);
             button_reset_simulation.Name = "button_reset_simulation";
@@ -92,6 +93,7 @@
             button_reset_simulation.TabIndex = 4;
             button_reset_simulation.Text = "Сброс";
             button_reset_simulation.UseVisualStyleBackColor = true;
+            button_reset_simulation.Click += button_reset_simulation_Click;
             // 
             // groupBox3
             // 
@@ -131,18 +133,21 @@
             label1.TabIndex = 0;
             label1.Text = "t: ";
             // 
-            // button_stop_simulation
+            // button_pause_simulation
             // 
-            button_stop_simulation.Font = new Font("Times New Roman", 13.8F);
-            button_stop_simulation.Location = new Point(6, 328);
-            button_stop_simulation.Name = "button_stop_simulation";
-            button_stop_simulation.Size = new Size(296, 93);
-            button_stop_simulation.TabIndex = 2;
-            button_stop_simulation.Text = "Стоп";
-            button_stop_simulation.UseVisualStyleBackColor = true;
+            button_pause_simulation.Cursor = Cursors.Hand;
+            button_pause_simulation.Font = new Font("Times New Roman", 13.8F);
+            button_pause_simulation.Location = new Point(6, 328);
+            button_pause_simulation.Name = "button_pause_simulation";
+            button_pause_simulation.Size = new Size(296, 93);
+            button_pause_simulation.TabIndex = 2;
+            button_pause_simulation.Text = "Пауза";
+            button_pause_simulation.UseVisualStyleBackColor = true;
+            button_pause_simulation.Click += button_pause_simulation_Click;
             // 
             // button_start_simulation
             // 
+            button_start_simulation.Cursor = Cursors.Hand;
             button_start_simulation.Font = new Font("Times New Roman", 13.8F);
             button_start_simulation.Location = new Point(6, 229);
             button_start_simulation.Name = "button_start_simulation";
@@ -150,9 +155,11 @@
             button_start_simulation.TabIndex = 1;
             button_start_simulation.Text = "Пуск";
             button_start_simulation.UseVisualStyleBackColor = true;
+            button_start_simulation.Click += button_start_simulation_Click;
             // 
             // button_add_satellite_in_system
             // 
+            button_add_satellite_in_system.Cursor = Cursors.Hand;
             button_add_satellite_in_system.Font = new Font("Times New Roman", 13.8F);
             button_add_satellite_in_system.Location = new Point(6, 130);
             button_add_satellite_in_system.Name = "button_add_satellite_in_system";
@@ -160,6 +167,7 @@
             button_add_satellite_in_system.TabIndex = 0;
             button_add_satellite_in_system.Text = "Добавить спутник";
             button_add_satellite_in_system.UseVisualStyleBackColor = true;
+            button_add_satellite_in_system.Click += button_add_satellite_in_system_Click;
             // 
             // timer_simulation
             // 
@@ -190,7 +198,7 @@
         private GroupBox groupBox1;
         private PictureBox pictureBox_simulation;
         private GroupBox groupBox2;
-        private Button button_stop_simulation;
+        private Button button_pause_simulation;
         private Button button_start_simulation;
         private Button button_add_satellite_in_system;
         private GroupBox groupBox3;
