@@ -121,7 +121,7 @@
             groupBox3.Font = new Font("Times New Roman", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
             groupBox3.Location = new Point(399, 12);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(1456, 920);
+            groupBox3.Size = new Size(1467, 920);
             groupBox3.TabIndex = 2;
             groupBox3.TabStop = false;
             groupBox3.Text = "Карта трасс";
@@ -130,7 +130,7 @@
             // 
             pictureBox_map_tracks.Location = new Point(6, 33);
             pictureBox_map_tracks.Name = "pictureBox_map_tracks";
-            pictureBox_map_tracks.Size = new Size(1444, 881);
+            pictureBox_map_tracks.Size = new Size(1455, 881);
             pictureBox_map_tracks.TabIndex = 0;
             pictureBox_map_tracks.TabStop = false;
             pictureBox_map_tracks.Paint += pictureBox_map_tracks_Paint;
@@ -139,7 +139,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1867, 944);
+            ClientSize = new Size(1878, 944);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
