@@ -21,13 +21,13 @@ namespace Satellite_Movements
         }
 
         //Функция установки фона системе
-        public static void SetBackgroung(Graphics g)
+        public static void SetBackgroung(Graphics g,int width, int height)
         {
             //преобразуем потока байт из ресурсов в картинку, делаем копию, устанавливаем в контролле
             using (MemoryStream ms = new MemoryStream(Properties.Resources.backgroundForProjectSimulationMovementsSatellite))
             {
                 Image img = new Bitmap(ms);
-                g.DrawImage(img, 0, 0, img.Width, img.Height);
+                g.DrawImage(img, 0, 0, width, height);
             }
         }
         //Функция установки спутника

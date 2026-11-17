@@ -19,7 +19,7 @@ namespace Satellite_Movements
             r_in_px_and_R_in_km = new KeyValuePair<int, int>(50, 6371);
             colors = new List<Color>();
             angles = new List<int>();
-            
+
             button_reset_simulation.Enabled = false;
             button_pause_simulation.Enabled = false;
             bool IsPause = true;
@@ -31,16 +31,16 @@ namespace Satellite_Movements
             graphics.Clear(Color.White);
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             //установка фона: звездное небо
-            DrawRepository.SetBackgroung(graphics);
+            DrawRepository.SetBackgroung(graphics,pictureBox_simulation.Width,pictureBox_simulation.Height);
 
             //установка в центре Земли
             DrawRepository.SetEarth(graphics, new Point(pictureBox_simulation.Width / 2, pictureBox_simulation.Height / 2));
-            Random random= new Random();    
+            Random random = new Random();
             //отрисовка всех спутников и их орбит
             for (int i = 0; i < satellites.Count; i++)
-            { 
+            {
                 //инфа о спутнике
-                var data= satellites[i];
+                var data = satellites[i];
 
                 //реальные параметры
                 //отрисовка орбиты i - спутника
@@ -54,13 +54,13 @@ namespace Satellite_Movements
                 float widthInWorld = width / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
                 float heightInWorld = height / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
 
-                float shift_x = (data.a-c)/r_in_px_and_R_in_km.Value* r_in_px_and_R_in_km.Key;
+                float shift_x = (data.a - c) / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
                 float shift_y = b / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
 
                 //отрисовываем орбиту спутника - рандомным цветом
                 using (Pen pen = new Pen(colors[i], 4.0f))
                 {
-                    graphics.DrawEllipse(pen, (float)pictureBox_simulation.Width / 2- shift_x, (float)pictureBox_simulation.Height / 2- shift_y, widthInWorld, heightInWorld);
+                    graphics.DrawEllipse(pen, (float)pictureBox_simulation.Width / 2 - shift_x, (float)pictureBox_simulation.Height / 2 - shift_y, widthInWorld, heightInWorld);
                 }
                 //отрисовка спутника в виде движущегося шарика
 
@@ -77,19 +77,13 @@ namespace Satellite_Movements
                 float y = r * (float)Math.Sin(Math.PI / 180 * alpha);
 
                 //перевод координат спутника в мировые 
-                float x_world= x / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
+                float x_world = x / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
                 float y_world = y / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
 
 
                 //перенос системы координат в точку спутника
                 graphics.TranslateTransform(x_world, y_world);
 
-                //отрисовка спутника как шарика
-                /*using (SolidBrush brush = new SolidBrush(Color.White))
-                {
-                    //система координат сейчас находится в точке спутника
-                    graphics.FillEllipse(brush, -10, -10, 20, 20);
-                }*/
                 //поворот системы координат спутника для ориентации его всегда на Землю
                 graphics.RotateTransform(-45 + alpha);//на вход идут градусы
                 //установка спутника
@@ -142,9 +136,9 @@ namespace Satellite_Movements
         {
             Random random = new Random();
             using (Add_Satellite form = new Add_Satellite())
-            { 
+            {
                 DialogResult result = form.ShowDialog();
-                if (result == DialogResult.OK) 
+                if (result == DialogResult.OK)
                 {
                     satellites.Add(form.satellite);
                     angles.Add((int)form.satellite.true_anomaly);
@@ -164,7 +158,7 @@ namespace Satellite_Movements
             timer_simulation.Start();
         }
 
-        
+
         private void button_pause_simulation_Click(object sender, EventArgs e)
         {
             if (!IsPause)
@@ -191,6 +185,19 @@ namespace Satellite_Movements
                 angles[i] = (int)satellites[i].true_anomaly;
             }
             pictureBox_simulation.Invalidate();
+        }
+
+        private void button_delete_satellite_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_satellite_tracks_Click(object sender, EventArgs e)
+        {
+            using (Satellite_Tracks form = new Satellite_Tracks())
+            { 
+                DialogResult result=form.ShowDialog();
+            }
         }
     }
 }
