@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Reflection.Metadata;
 using System.Windows.Forms;
 
@@ -24,6 +25,60 @@ namespace Satellite_Movements
             button_pause_simulation.Enabled = false;
             bool IsPause = true;
 
+            //обновление информации на таблице
+            UpdateDataGridView(satellites);
+            //настройка таблицы
+            SetSettingsDataGridView();
+        }
+
+        private void UpdateDataGridView(List<DataSatellite> data)
+        {
+            //очистка
+            dataGridView_list_satellite.DataSource = null;
+            dataGridView_list_satellite.Rows.Clear();
+            dataGridView_list_satellite.Columns.Clear();
+
+            //создаем DataTable
+            DataTable table = new DataTable();
+
+            //создаем столбцы
+            table.Columns.Add("ID", typeof(int));  //  id спутника
+            table.Columns.Add("Ќазвание спутника", typeof(string));  //  название спутника
+            table.Columns.Add("»стинна€ аномали€ спутника", typeof(string));  //  »стинна€ аномали€ спутника
+
+            //заполн€ем таблицу
+            foreach (var sat in data)
+            {
+                //создаем строку таблицы
+                DataRow row = table.NewRow();
+
+                //заполн€ем строку данными
+                row["ID"] = sat.Id;
+                row["Ќазвание спутника"] = sat.name;
+                row["»стинна€ аномали€ спутника"]=sat.true_anomaly.ToString();
+                //добавл€ем строку в таблицу
+                table.Rows.Add(row);
+            }
+            //выводим таблицу
+            dataGridView_list_satellite.DataSource = table;
+        }
+
+        private void SetSettingsDataGridView()
+        {
+            //разрешаем только читать, без возможности редактировани€
+            dataGridView_list_satellite.ReadOnly = true;
+            //нельз€ добавл€ть строки
+            dataGridView_list_satellite.AllowUserToAddRows = false;
+            //нельз€ удал€ть строки
+            dataGridView_list_satellite.AllowUserToDeleteRows = false;
+            //стиль самих €чеек
+            dataGridView_list_satellite.DefaultCellStyle.Font = new Font("Times New Roman", 14);
+            //стиль заголовков
+            dataGridView_list_satellite.ColumnHeadersDefaultCellStyle.Font = new Font("Times New Roman", 12, FontStyle.Regular);
+            //убираем самый левый столбец
+            dataGridView_list_satellite.RowHeadersVisible = false;
+            //столбцы занимают всю ширину таблицы
+            dataGridView_list_satellite.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
         private void pictureBox_simulation_Paint(object sender, PaintEventArgs e)
         {
@@ -90,6 +145,12 @@ namespace Satellite_Movements
                 DrawRepository.SetSatellite(graphics);
                 //сбрасываем все настройки
                 graphics.ResetTransform();
+
+                //обновл€ем положение спутника в таблице
+                for (int k = 0; k < dataGridView_list_satellite.Rows.Count; k++)
+                {
+                    dataGridView_list_satellite.Rows[i].Cells["»стинна€ аномали€ спутника"].Value = alpha.ToString();
+                }
             }
 
             /*int R = 300;
@@ -140,9 +201,17 @@ namespace Satellite_Movements
                 DialogResult result = form.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    satellites.Add(form.satellite);
-                    angles.Add((int)form.satellite.true_anomaly);
+                    var sat = form.satellite;
+                    sat.Id= satellites.Count()+1;
+                    if (sat.true_anomaly < 0)
+                        sat.true_anomaly += 360;
+                    satellites.Add(sat);
+                    angles.Add((int)sat.true_anomaly);
                     colors.Add(Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)));
+
+                    //обновление информации на таблице
+                    UpdateDataGridView(satellites);
+                    //отрисовка
                     pictureBox_simulation.Invalidate();
                 }
             }
@@ -194,9 +263,9 @@ namespace Satellite_Movements
 
         private void button_satellite_tracks_Click(object sender, EventArgs e)
         {
-            using (Satellite_Tracks form = new Satellite_Tracks())
+            using (Satellite_Tracks form = new Satellite_Tracks(satellites))
             { 
-                DialogResult result=form.ShowDialog();
+                form.ShowDialog();
             }
         }
     }

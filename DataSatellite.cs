@@ -8,13 +8,17 @@ namespace Satellite_Movements
 {
     public struct DataSatellite
     {
-        public int Id;
-        public string name;
-        public float a;
-        public float e;
-        public float i;
-        public float longitude;
-        public float arg_Pericenter;
-        public float true_anomaly;
+        //  данные о спутнике
+        public int Id;  // id спутника
+        public string name;  //  имя спутника
+        //  параметры орбиты спутника
+        public float a;  //  большая полуось
+        public float e;  // эксцентриситет орбиты
+        public float i;  // наклонение орбиты
+        public float longitude;  //  угол восходящего узла
+        public float arg_Pericenter;  //  аргумент перицентра
+        public float true_anomaly;  //  истинная аномалия - начальное положение спутника на орбите
+        public float Geog_latitude;  //  географическая широта
+        public float Geog_longitude;  //  географическая долгота
     }
 }

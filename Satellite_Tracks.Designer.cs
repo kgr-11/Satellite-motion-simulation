@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
-            dataGridView1 = new DataGridView();
+            dataGridView_list_active_satellites = new DataGridView();
             groupBox2 = new GroupBox();
             button_OffSatellite = new Button();
-            comboBox1 = new ComboBox();
             label1 = new Label();
             button_OnSatellite = new Button();
             groupBox3 = new GroupBox();
             pictureBox_map_tracks = new PictureBox();
+            textBox_nameSatellite = new TextBox();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView_list_active_satellites).BeginInit();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox_map_tracks).BeginInit();
@@ -46,7 +46,7 @@
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(dataGridView1);
+            groupBox1.Controls.Add(dataGridView_list_active_satellites);
             groupBox1.Font = new Font("Times New Roman", 13.8F);
             groupBox1.Location = new Point(12, 12);
             groupBox1.Name = "groupBox1";
@@ -55,19 +55,19 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Активные спутники";
             // 
-            // dataGridView1
+            // dataGridView_list_active_satellites
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(6, 33);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(369, 721);
-            dataGridView1.TabIndex = 0;
+            dataGridView_list_active_satellites.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView_list_active_satellites.Location = new Point(6, 33);
+            dataGridView_list_active_satellites.Name = "dataGridView_list_active_satellites";
+            dataGridView_list_active_satellites.RowHeadersWidth = 51;
+            dataGridView_list_active_satellites.Size = new Size(369, 721);
+            dataGridView_list_active_satellites.TabIndex = 0;
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(textBox_nameSatellite);
             groupBox2.Controls.Add(button_OffSatellite);
-            groupBox2.Controls.Add(comboBox1);
             groupBox2.Controls.Add(label1);
             groupBox2.Controls.Add(button_OnSatellite);
             groupBox2.Font = new Font("Times New Roman", 13.8F);
@@ -87,14 +87,6 @@
             button_OffSatellite.TabIndex = 3;
             button_OffSatellite.Text = "Отключить";
             button_OffSatellite.UseVisualStyleBackColor = true;
-            // 
-            // comboBox1
-            // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(113, 33);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(262, 34);
-            comboBox1.TabIndex = 1;
             // 
             // label1
             // 
@@ -135,6 +127,13 @@
             pictureBox_map_tracks.TabStop = false;
             pictureBox_map_tracks.Paint += pictureBox_map_tracks_Paint;
             // 
+            // textBox_nameSatellite
+            // 
+            textBox_nameSatellite.Location = new Point(113, 33);
+            textBox_nameSatellite.Name = "textBox_nameSatellite";
+            textBox_nameSatellite.Size = new Size(262, 34);
+            textBox_nameSatellite.TabIndex = 4;
+            // 
             // Satellite_Tracks
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -147,7 +146,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Спутниковые трассы";
             groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView_list_active_satellites).EndInit();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             groupBox3.ResumeLayout(false);
@@ -158,13 +157,13 @@
         #endregion
 
         private GroupBox groupBox1;
-        private DataGridView dataGridView1;
+        private DataGridView dataGridView_list_active_satellites;
         private GroupBox groupBox2;
         private Button button_OffSatellite;
         private Button button_OnSatellite;
-        private ComboBox comboBox1;
         private Label label1;
         private GroupBox groupBox3;
         private PictureBox pictureBox_map_tracks;
+        private TextBox textBox_nameSatellite;
     }
 }
