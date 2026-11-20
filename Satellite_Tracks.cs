@@ -12,10 +12,12 @@ namespace Satellite_Movements
 {
     public partial class Satellite_Tracks : Form
     {
+        List<Sat> satellites;
         public Satellite_Tracks(List<Sat> data)
         {
             InitializeComponent();
 
+            satellites = data;
             //заполнение таблицы
             FillDataGridView(data);
 
@@ -77,7 +79,7 @@ namespace Satellite_Movements
             //выводим таблицу
             dataGridView_list_active_satellites.DataSource = table;
         }
-
+        
         private void pictureBox_map_tracks_Paint(object sender, PaintEventArgs e)
         {
             Graphics graphics = e.Graphics;
@@ -89,6 +91,45 @@ namespace Satellite_Movements
 
             //отрисовка сетки поверх фона
             DrawRepositoryForFormSatelliteTracks.DrawGridForMap(graphics, pictureBox_map_tracks.Width, pictureBox_map_tracks.Height);
+
+            //перенос системы координат в (0,0)
+            graphics.TranslateTransform((float)pictureBox_map_tracks.Width/2,(float) pictureBox_map_tracks.Height/2);
+
+            
+            using (Pen penForPath = new Pen(Color.Red, 3.0f))
+            {
+                foreach (var sat in satellites)
+                {
+                    /*for (int i = 0; i < sat.all_pos.Count - 1; i++)
+                    {
+                        var st_ECI = sat.all_pos[i];
+                        var st_ECEF = new SatellitePossitionInECEF(sat.longitude, sat.arg_Pericenter, sat.i, st_ECI);
+                        var st_LLA = new SatellitePositionInLLA(st_ECEF);
+                        PointF st = DrawRepositoryForFormSatelliteTracks.RealCoordToWorld(st_LLA.Longitude, st_LLA.Latitude, pictureBox_map_tracks.Width, pictureBox_map_tracks.Height);
+
+                        var fn_ECI = sat.all_pos[i + 1];
+                        var fn_ECEF = new SatellitePossitionInECEF(sat.longitude, sat.arg_Pericenter, sat.i, fn_ECI);
+                        var fn_LLA = new SatellitePositionInLLA(fn_ECEF);
+                        PointF fn = DrawRepositoryForFormSatelliteTracks.RealCoordToWorld(fn_LLA.Longitude, fn_LLA.Latitude, pictureBox_map_tracks.Width, pictureBox_map_tracks.Height);
+
+                        graphics.DrawLine(penForPath, st, fn);
+                    }*/
+                    Random random = new Random();   
+                    using (SolidBrush brush = new SolidBrush(Color.FromArgb(255,random.Next(0,256), random.Next(0, 256), random.Next(0, 256))))
+                    {
+                        for (int i = 0; i < sat.all_pos.Count; i++)
+                        {
+                            var st_ECI = sat.all_pos[i];
+                            var st_ECEF = new SatellitePossitionInECEF(sat.longitude, sat.arg_Pericenter, sat.i, st_ECI);
+                            var st_LLA = new SatellitePositionInLLA(st_ECEF);
+                            PointF st = DrawRepositoryForFormSatelliteTracks.RealCoordToWorld(st_LLA.Longitude, st_LLA.Latitude, pictureBox_map_tracks.Width, pictureBox_map_tracks.Height);
+                            graphics.FillEllipse(brush, st.X - 5, st.Y - 5, 10, 10);
+                        }
+                    }
+               
+                }
+            }
+
         }
     }
 }

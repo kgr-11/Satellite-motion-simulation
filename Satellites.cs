@@ -55,9 +55,10 @@ namespace Satellite_Movements
             //Считаем положение всех спутник из списка в следующий момент времени
             for (int i = 0; i < satellites.Count; i++)
             {
-                SatellitePossition pos=MathRepository.NextPosition(satellites[i].currPos,step_t);
+                SatellitePossitionInECI pos=MathRepository.NextPosition(satellites[i].currPos,step_t);
                 //пересчет положения каждого спутника
                 satellites[i].currPos = pos;
+                satellites[i].all_pos.Add(pos);
             }
         }
         public void Reset_Satellite()

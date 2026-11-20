@@ -25,7 +25,9 @@ namespace Satellite_Movements
         public float arg_Pericenter;  //  аргумент перицентра
         public float true_anomaly;  //  истинная аномалия - начальное положение спутника на орбите
 
-        public SatellitePossition currPos;//текущая позиция спутника
+        public List<SatellitePossitionInECI> all_pos;
+
+        public SatellitePossitionInECI currPos;//текущая позиция спутника
         public Sat(DataSatellite dataSatellite) 
         {
             this.Id = dataSatellite.Id;
@@ -38,6 +40,8 @@ namespace Satellite_Movements
             this.true_anomaly = dataSatellite.true_anomaly;
             //расчет начальной позиции спутника в декартовой системе координат
             currPos = KeplerToDescartes();
+            all_pos = new List<SatellitePossitionInECI>();
+            all_pos.Add(currPos);
         }
         public Sat(Sat other)
         {
@@ -50,15 +54,19 @@ namespace Satellite_Movements
             this.arg_Pericenter = other.arg_Pericenter;
             this.true_anomaly = other.true_anomaly;
             this.currPos = other.currPos;
+            if (all_pos is null)
+            {
+                all_pos = new List<SatellitePossitionInECI>();
+            }
+            all_pos.Add(currPos);
         }
-        private SatellitePossition KeplerToDescartes()
+        private SatellitePossitionInECI KeplerToDescartes()
         {
             //гравитационный параметр -  GM
             const float mu = (float)(6.67) * (float)(5.9722) * (float)1e13;
 
             //вычисляем расстояние до центра масc,
-            //в знаменателе +- зависит в каком фокусе Земля, если в отрицательном, то минус
-            float r = a * (1 - e * e) / (1 - e * (float)Math.Cos(Math.PI / 180 * true_anomaly));
+            float r = a * (1 - e * e) / (1 + e * (float)Math.Cos(Math.PI / 180 * true_anomaly));
 
             //координаты  и скорости в орбитальной плоскости
             float x_orb = r * (float)Math.Cos(Math.PI / 180 * true_anomaly);
@@ -106,13 +114,14 @@ namespace Satellite_Movements
 
             var Speed = A * Speed_ord;
 
-            return new SatellitePossition(Coord[0, 0], Coord[1, 0], Coord[2, 0], Speed[0, 0], Speed[1, 0], Speed[2, 0]);
+            return new SatellitePossitionInECI(Coord[0, 0], Coord[1, 0], Coord[2, 0], Speed[0, 0], Speed[1, 0], Speed[2, 0]);
         }
         public void Reset_Sat()
         {
             //расчет начальной позиции спутника в декартовой системе координат
             currPos = KeplerToDescartes();
-            
+            all_pos.Clear();
+            all_pos.Add(currPos);
         }
     }
 }

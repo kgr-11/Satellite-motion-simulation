@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Satellite_Movements
 {
-    public struct SatellitePossition
+    //позиция спутника в ИСК
+    public struct SatellitePossitionInECI
     {
         public float X;
         public float Y;
@@ -14,7 +15,7 @@ namespace Satellite_Movements
         public float Vx;
         public float Vy;
         public float Vz;
-        public SatellitePossition(float X, float Y, float Z, float Vx, float Vy, float Vz)
+        public SatellitePossitionInECI(float X, float Y, float Z, float Vx, float Vy, float Vz)
         { 
             this.X = X;
             this.Y = Y;

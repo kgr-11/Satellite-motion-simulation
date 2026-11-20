@@ -10,13 +10,13 @@ namespace Satellite_Movements
     {
         const float G = (float)(6.67 *1e-11);
         const float M = (float)(5.9722 * 1e24);
-        public static SatellitePossition NextPosition(SatellitePossition currentPosition, float step_t)
+        public static SatellitePossitionInECI NextPosition(SatellitePossitionInECI currentPosition, float step_t)
         {
             //эта функция вызывает рк-4
             return RK4(currentPosition, step_t);
         }
 
-        static SatellitePossition RK4(SatellitePossition currentPosition, float step_t)
+        static SatellitePossitionInECI RK4(SatellitePossitionInECI currentPosition, float step_t)
         {
             //расчет кф-тов k
 
@@ -74,7 +74,7 @@ namespace Satellite_Movements
             float new_Z = currentPosition.Z + currentPosition.Vz * step_t + (k1_z + k2_z + k3_z) / 6 * step_t;
             float new_Vz = currentPosition.Vz + (k1_z + 2 * k2_z + 2 * k3_z + k4_z) / 6;
 
-            return new SatellitePossition(new_X, new_Y, new_Z, new_Vx, new_Vy, new_Vz);
+            return new SatellitePossitionInECI(new_X, new_Y, new_Z, new_Vx, new_Vy, new_Vz);
         }
         //функция ускорения по X
         static float a_x(float X,float Y,float Z) 

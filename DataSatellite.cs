@@ -18,5 +18,17 @@ namespace Satellite_Movements
         public float longitude;  //  угол восходящего узла
         public float arg_Pericenter;  //  аргумент перицентра
         public float true_anomaly;  //  истинная аномалия - начальное положение спутника на орбите
+
+        public DataSatellite(string name,float a,float e, float i, float longitude,float arg_Pericenter,float true_anomaly) 
+        {
+            this.name = name;
+            this.a = a;
+            this.e = e;
+            this.i = i;
+            this.longitude = longitude;
+            this.arg_Pericenter = arg_Pericenter;
+            this.true_anomaly = true_anomaly;
+        }
+
     }
 }

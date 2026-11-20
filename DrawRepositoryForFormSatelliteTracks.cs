@@ -63,5 +63,12 @@ namespace Satellite_Movements
                 g.DrawImage(img, 0, 0, width, height);
             }
         }
+        public static PointF RealCoordToWorld(float Longitude, float Latitude, int width, int height)
+        {
+            float x_Longitude = (float)width / 360 * Longitude;
+            float y_Latitude = (float)height /180 * Latitude;
+            return new PointF(x_Longitude, y_Latitude);
+
+        }
     }
 }

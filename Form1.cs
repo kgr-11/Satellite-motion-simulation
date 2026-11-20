@@ -20,6 +20,11 @@ namespace Satellite_Movements
             button_pause_simulation.Enabled = false;
             bool IsPause = true;
 
+            //устанавливаем параметры по умолчанию
+            foreach (var data in PullDefaultParameters.pull)
+            {
+                AddSat(data);
+            }
             //обновление информации на таблице
             UpdateDataGridView(satellites.satellites);
             //настройка таблицы
@@ -73,7 +78,7 @@ namespace Satellite_Movements
             //столбцы занимают всю ширину таблицы
             dataGridView_list_satellite.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
-        private PointF RealCoordToWorld(SatellitePossition pos)
+        private PointF RealCoordToWorld(SatellitePossitionInECI pos)
         {
             int Real_R_Earth = 6371;
             int World_R_Earth = 50;
@@ -108,6 +113,17 @@ namespace Satellite_Movements
                 graphics.ScaleTransform(1.0f, -1.0f);
 
                 PointF posSatInWorld = RealCoordToWorld(data.currPos);
+
+                using (Pen pen = new Pen(Color.FromArgb(100, 255, 57, 0), 2.0f))
+                {
+                    PointF curr = posSatInWorld;
+                    for (int k = data.all_pos.Count-1; k > 0; k--)
+                    {
+                        PointF lastPos = RealCoordToWorld(data.all_pos[k-1]);
+                        graphics.DrawLine(pen, curr, lastPos);
+                        curr = lastPos;
+                    }
+                }
 
                 //перенос системы координат в точку спутника
                 graphics.TranslateTransform(posSatInWorld.X, posSatInWorld.Y);
@@ -144,23 +160,26 @@ namespace Satellite_Movements
                 DialogResult result = form.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    var sat = form.satellite;
-                    sat.a *= 1000;//приводим к метрам в СИ
-                    sat.Id = ++Sat.LastId;
-                    if (sat.true_anomaly < 0)
-                    {
-                        sat.true_anomaly += 360;
-                        sat.true_anomaly %= 360;
-                    }
-                    //добавляем спутник в сет спутников
-                    satellites.Add_Satellite(sat);
-
+                    AddSat(form.satellite);
                     //обновление информации на таблице
                     UpdateDataGridView(satellites.satellites);
                     //отрисовка
                     pictureBox_simulation.Invalidate();
                 }
             }
+        }
+        void AddSat(DataSatellite sat)
+        {
+            sat.a += 6371;//расстояние указано от поверхности Земли
+            sat.a *= 1000;//приводим к метрам в СИ
+            sat.Id = ++Sat.LastId;
+            if (sat.true_anomaly < 0)
+            {
+                sat.true_anomaly += 360;
+                sat.true_anomaly %= 360;
+            }
+            //добавляем спутник в сет спутников
+            satellites.Add_Satellite(sat);
         }
 
         private void button_start_simulation_Click(object sender, EventArgs e)
