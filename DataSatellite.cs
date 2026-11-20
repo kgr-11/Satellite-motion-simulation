@@ -18,7 +18,5 @@ namespace Satellite_Movements
         public float longitude;  //  угол восходящего узла
         public float arg_Pericenter;  //  аргумент перицентра
         public float true_anomaly;  //  истинная аномалия - начальное положение спутника на орбите
-        public float Geog_latitude;  //  географическая широта
-        public float Geog_longitude;  //  географическая долгота
     }
 }

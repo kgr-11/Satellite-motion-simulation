@@ -12,7 +12,7 @@ namespace Satellite_Movements
 {
     public partial class Satellite_Tracks : Form
     {
-        public Satellite_Tracks(List<DataSatellite>data)
+        public Satellite_Tracks(List<Sat> data)
         {
             InitializeComponent();
 
@@ -46,7 +46,7 @@ namespace Satellite_Movements
             dataGridView_list_active_satellites.Columns["Название спутника"].Resizable = DataGridViewTriState.False;
             dataGridView_list_active_satellites.Columns["Географические координаты"].Resizable = DataGridViewTriState.False;
         }
-        private void FillDataGridView(List<DataSatellite> data)
+        private void FillDataGridView(List<Sat> data)
         {
             //очистка
             dataGridView_list_active_satellites.DataSource = null;
@@ -70,7 +70,7 @@ namespace Satellite_Movements
                 //заполняем строку данными
                 row["ID"] = sat.Id;
                 row["Название спутника"] = sat.name;
-                row["Географические координаты"] = "(" + sat.Geog_latitude.ToString() + ";" + sat.Geog_longitude.ToString() + ")";
+                row["Географические координаты"] = "(" + 0.ToString() + ";" + 0.ToString() + ")";
                 //добавляем строку в таблицу
                 table.Rows.Add(row);
             }

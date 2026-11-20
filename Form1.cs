@@ -8,30 +8,25 @@ namespace Satellite_Movements
     public partial class Form1 : Form
     {
         bool IsPause;
-        List<DataSatellite> satellites;
-        List<int> angles;
-        KeyValuePair<int, int> r_in_px_and_R_in_km;
-        List<Color> colors;
+        Satellites satellites;
         public Form1()
         {
             InitializeComponent();
 
-            satellites = new List<DataSatellite>();
-            r_in_px_and_R_in_km = new KeyValuePair<int, int>(50, 6371);
-            colors = new List<Color>();
-            angles = new List<int>();
+            //создаем объект хранящий, работающий со спутниками
+            satellites = new Satellites();
 
             button_reset_simulation.Enabled = false;
             button_pause_simulation.Enabled = false;
             bool IsPause = true;
 
             //обновление информации на таблице
-            UpdateDataGridView(satellites);
+            UpdateDataGridView(satellites.satellites);
             //настройка таблицы
             SetSettingsDataGridView();
         }
 
-        private void UpdateDataGridView(List<DataSatellite> data)
+        private void UpdateDataGridView(List<Sat> data)
         {
             //очистка
             dataGridView_list_satellite.DataSource = null;
@@ -44,7 +39,6 @@ namespace Satellite_Movements
             //создаем столбцы
             table.Columns.Add("ID", typeof(int));  //  id спутника
             table.Columns.Add("Название спутника", typeof(string));  //  название спутника
-            table.Columns.Add("Истинная аномалия спутника", typeof(string));  //  Истинная аномалия спутника
 
             //заполняем таблицу
             foreach (var sat in data)
@@ -55,7 +49,6 @@ namespace Satellite_Movements
                 //заполняем строку данными
                 row["ID"] = sat.Id;
                 row["Название спутника"] = sat.name;
-                row["Истинная аномалия спутника"]=sat.true_anomaly.ToString();
                 //добавляем строку в таблицу
                 table.Rows.Add(row);
             }
@@ -80,137 +73,90 @@ namespace Satellite_Movements
             //столбцы занимают всю ширину таблицы
             dataGridView_list_satellite.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
+        private PointF RealCoordToWorld(SatellitePossition pos)
+        {
+            int Real_R_Earth = 6371;
+            int World_R_Earth = 50;
+
+            //перевод координат спутника в мировые 
+            float x_world = pos.X / 1000 / Real_R_Earth * World_R_Earth;
+            float y_world = pos.Y / 1000 / Real_R_Earth * World_R_Earth;
+
+            return new PointF(x_world, y_world);
+
+        }
         private void pictureBox_simulation_Paint(object sender, PaintEventArgs e)
         {
             Graphics graphics = e.Graphics;
             graphics.Clear(Color.White);
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             //установка фона: звездное небо
-            DrawRepository.SetBackgroung(graphics,pictureBox_simulation.Width,pictureBox_simulation.Height);
+            DrawRepository.SetBackgroung(graphics, pictureBox_simulation.Width, pictureBox_simulation.Height);
 
             //установка в центре Земли
             DrawRepository.SetEarth(graphics, new Point(pictureBox_simulation.Width / 2, pictureBox_simulation.Height / 2));
-            Random random = new Random();
-            //отрисовка всех спутников и их орбит
-            for (int i = 0; i < satellites.Count; i++)
+            var sats = satellites.satellites;
+            //отрисовка всех спутников
+            for (int i = 0; i < sats.Count; i++)
             {
                 //инфа о спутнике
-                var data = satellites[i];
-
-                //реальные параметры
-                //отрисовка орбиты i - спутника
-                float c = data.e * data.a;//фокусное расстояние
-                float b = (float)Math.Sqrt(data.a * data.a - c * c);//малая полуось
-                //реальные размеры эллипса
-                float width = 2 * data.a;
-                float height = 2 * b;
-
-                //мировые размеры
-                float widthInWorld = width / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
-                float heightInWorld = height / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
-
-                float shift_x = (data.a - c) / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
-                float shift_y = b / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
-
-                //отрисовываем орбиту спутника - рандомным цветом
-                using (Pen pen = new Pen(colors[i], 4.0f))
-                {
-                    graphics.DrawEllipse(pen, (float)pictureBox_simulation.Width / 2 - shift_x, (float)pictureBox_simulation.Height / 2 - shift_y, widthInWorld, heightInWorld);
-                }
-                //отрисовка спутника в виде движущегося шарика
+                var data = sats[i];
 
                 //переносим систему координат в центр Земли
                 graphics.TranslateTransform(pictureBox_simulation.Width / 2, pictureBox_simulation.Height / 2);
                 //делаем базовую декартовую систему координат
                 graphics.ScaleTransform(1.0f, -1.0f);
 
-                //расчет положения спутника в реальных координатах
-                int alpha = angles[i];
-                float p = b * b / data.a;
-                float r = p / (1 - data.e * (float)Math.Cos(Math.PI / 180 * alpha));
-                float x = r * (float)Math.Cos(Math.PI / 180 * alpha);
-                float y = r * (float)Math.Sin(Math.PI / 180 * alpha);
-
-                //перевод координат спутника в мировые 
-                float x_world = x / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
-                float y_world = y / r_in_px_and_R_in_km.Value * r_in_px_and_R_in_km.Key;
-
+                PointF posSatInWorld = RealCoordToWorld(data.currPos);
 
                 //перенос системы координат в точку спутника
-                graphics.TranslateTransform(x_world, y_world);
+                graphics.TranslateTransform(posSatInWorld.X, posSatInWorld.Y);
 
-                //поворот системы координат спутника для ориентации его всегда на Землю
+                // alpha в градусах
+                float alpha = (float)(Math.Atan2(data.currPos.Y, data.currPos.X) / Math.PI * 180);
+
+                //поворот системы координат спутника для постоянной ориентации спутника на Земля
                 graphics.RotateTransform(-45 + alpha);//на вход идут градусы
+
+
                 //установка спутника
                 DrawRepository.SetSatellite(graphics);
-                //сбрасываем все настройки
                 graphics.ResetTransform();
 
-                //обновляем положение спутника в таблице
-                for (int k = 0; k < dataGridView_list_satellite.Rows.Count; k++)
-                {
-                    dataGridView_list_satellite.Rows[i].Cells["Истинная аномалия спутника"].Value = alpha.ToString();
-                }
             }
-
-            /*int R = 300;
-            //отрисовка орбиты
-            using (Pen pen = new Pen(Color.Red, 4.0f))
-            {
-                graphics.DrawEllipse(pen, (float)pictureBox_simulation.Width / 2 - R, (float)pictureBox_simulation.Height / 2 - R, R * 2, R * 2);
-            }
-            //отрисовка спутника как движущейся картинки
-            //переносим систему координат в центр и рисуем спутник относительно центра Земли
-            graphics.TranslateTransform(pictureBox_simulation.Width / 2, pictureBox_simulation.Height / 2);
-            //делаем базовую декартовую систему координат
-            graphics.ScaleTransform(1.0f, -1.0f);
-
-            float x = R * (float)Math.Cos(Math.PI / 180 * angle);
-            float y = R * (float)Math.Sin(Math.PI / 180 * angle);
-
-            //перенос системы координат в точку спутника
-            graphics.TranslateTransform(x, y);
-
-            //поворот системы координат спутника для ориентации его всегда на Землю
-            graphics.RotateTransform(-45 + angle);//на вход идут градусы
-
-            //установка спутника
-            DrawRepository.SetSatellite(graphics, angle);*/
-
-
-            //сбрасываем все настройки
-            graphics.ResetTransform();
 
         }
 
         private void timer_simulation_Tick(object sender, EventArgs e)
         {
-            for (int i = 0; i < angles.Count; i++)
-            {
-                angles[i] += 1;
-                angles[i] %= 360;
-            }
+            //считываем временной шаг
+            float step_t = Convert.ToSingle(numericUpDown_stepTime.Value);
+            //расчет спутников в следующий момент времени
+            satellites.CalcPositionInNextTime(step_t);
+            //отрисовка спутников в следующий момент времени 
             pictureBox_simulation.Invalidate();
         }
 
         private void button_add_satellite_in_system_Click(object sender, EventArgs e)
         {
-            Random random = new Random();
             using (Add_Satellite form = new Add_Satellite())
             {
                 DialogResult result = form.ShowDialog();
                 if (result == DialogResult.OK)
                 {
                     var sat = form.satellite;
-                    sat.Id= satellites.Count()+1;
+                    sat.a *= 1000;//приводим к метрам в СИ
+                    sat.Id = ++Sat.LastId;
                     if (sat.true_anomaly < 0)
+                    {
                         sat.true_anomaly += 360;
-                    satellites.Add(sat);
-                    angles.Add((int)sat.true_anomaly);
-                    colors.Add(Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)));
+                        sat.true_anomaly %= 360;
+                    }
+                    //добавляем спутник в сет спутников
+                    satellites.Add_Satellite(sat);
 
                     //обновление информации на таблице
-                    UpdateDataGridView(satellites);
+                    UpdateDataGridView(satellites.satellites);
                     //отрисовка
                     pictureBox_simulation.Invalidate();
                 }
@@ -248,24 +194,42 @@ namespace Satellite_Movements
             button_start_simulation.Enabled = true;
             button_pause_simulation.Enabled = false;
             button_reset_simulation.Enabled = false;
-            //сброс углов каждого спутника
-            for (int i = 0; i < angles.Count; i++)
-            {
-                angles[i] = (int)satellites[i].true_anomaly;
-            }
+            satellites.Reset_Satellite();
             pictureBox_simulation.Invalidate();
         }
 
         private void button_delete_satellite_Click(object sender, EventArgs e)
         {
-
+            if (textBox_sat_id.Text != "" && textBox_sat_name.Text != "")
+            {
+                satellites.Remove_Satellite(Convert.ToInt32(textBox_sat_id.Text));
+                textBox_sat_id.Text = "";
+                textBox_sat_name.Text = "";
+                //обновление информации на таблице
+                UpdateDataGridView(satellites.satellites);
+                //отрисовка
+                pictureBox_simulation.Invalidate();
+            }
         }
 
         private void button_satellite_tracks_Click(object sender, EventArgs e)
         {
-            using (Satellite_Tracks form = new Satellite_Tracks(satellites))
-            { 
-                form.ShowDialog();
+            using (Satellite_Tracks form = new Satellite_Tracks(satellites.satellites))
+            {
+                DialogResult res = form.ShowDialog();
+            }
+        }
+
+        private void dataGridView_list_satellite_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // e.RowIndex - индекс строки, по которой кликнули
+            // e.ColumnIndex - индекс колонки, по которой кликнули
+
+            if (e.RowIndex >= 0)  // Проверка, что кликнут не по заголовку
+            {
+                DataGridViewRow row = dataGridView_list_satellite.Rows[e.RowIndex];
+                textBox_sat_id.Text = row.Cells["ID"].Value.ToString();
+                textBox_sat_name.Text=row.Cells["Название спутника"].Value.ToString();
             }
         }
     }
